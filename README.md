@@ -14,6 +14,7 @@ public:
     Serial.begin(9600);
   }
 
+  // this is called on every clock-signal, if you need that
   virtual void _update() {}
 
   virtual void onKeyDown(unsigned char key) {
@@ -22,6 +23,7 @@ public:
     Serial.print("UP: ");
     Serial.println(key);
   }
+
   virtual void onKeyUp(unsigned char key) {
     // if (key >= 0x80){  // If it is a modifier key
     // }
