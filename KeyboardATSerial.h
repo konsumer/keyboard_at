@@ -14,13 +14,14 @@ public:
   virtual void onKeyDown(unsigned char key) {
     // if (key >= 0x80){  // If it is a modifier key
     // }
-    Serial.print("UP: ");
+    Serial.print("DOWN: ");
     Serial.println(key);
   }
+
   virtual void onKeyUp(unsigned char key) {
     // if (key >= 0x80){  // If it is a modifier key
     // }
-    Serial.print("DOWN: ");
+    Serial.print("UP: ");
     Serial.println(key);
   }
 };
