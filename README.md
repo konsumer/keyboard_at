@@ -18,12 +18,12 @@ public:
   virtual void _update() {}
 
   virtual void onKeyDown(unsigned char key) {
-    Serial.print("UP: ");
+    Serial.print("DOWN: ");
     Serial.println(key);
   }
 
   virtual void onKeyUp(unsigned char key) {
-    Serial.print("DOWN: ");
+    Serial.print("UP: ");
     Serial.println(key);
   }
 };
