@@ -29,4 +29,4 @@ public:
 };
 ```
 
-Make similar for whatever you want to do.
+Make similar for whatever you want to do (like [bluetooth](https://github.com/T-vK/ESP32-BLE-Keyboard) or [wired usb](https://www.arduino.cc/reference/en/language/functions/usb/keyboard/).)
