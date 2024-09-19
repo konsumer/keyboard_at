@@ -1,1 +1,4 @@
 .DS_Store
+
+# ignored, so I don't leak my setup (wifi creds)
+boot.py

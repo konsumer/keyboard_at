@@ -1,32 +1,47 @@
-This has a basic driver for IBM Model F XT Keyboard, on Arduino.
+This is a USB HID keyboard-adapter for ESP32 running micropython.
 
-The idea is that you can extend the class, and make it do whatever you want (bluetooth, wired USB keyboard, etc.)
+# micropython setup
 
-Here is an example that just prints keycodes to serial:
+```
+# get the tools
+sudo pip install esptool adafruit-ampy
 
-```cpp
-#include "KeyboardAT.h"
+# mac is like this
+PORT=/dev/cu.usbserial-0001
 
-class KeyboardATSerial : public KeyboardAT {
-public:
-  KeyboardATSerial(int clock, int data)
-    : KeyboardAT(clock, data) {
-    Serial.begin(9600);
-  }
+# linux is more like this
+PORT=dev/ttyUSB0
 
-  // this is called on every clock-signal, if you need that
-  virtual void _update() {}
+wget https://micropython.org/resources/firmware/ESP32_GENERIC-20240602-v1.23.0.bin
 
-  virtual void onKeyDown(unsigned char key) {
-    Serial.print("DOWN: ");
-    Serial.println(key);
-  }
+esptool.py --chip esp32 --port ${PORT} erase_flash
+esptool.py --chip esp32 --port ${PORT} --baud 460800 write_flash -z 0x1000 ESP32_GENERIC-20240602-v1.23.0.bin
 
-  virtual void onKeyUp(unsigned char key) {
-    Serial.print("UP: ");
-    Serial.println(key);
-  }
-};
+# connect to REPL
+screen ${PORT} 115200
+
+# or use another serial-terminal program
+picocom --baud 115200 ${PORT}
 ```
 
-Make similar for whatever you want to do (like [bluetooth](https://github.com/T-vK/ESP32-BLE-Keyboard) or [wired usb](https://www.arduino.cc/reference/en/language/functions/usb/keyboard/).)
+now disconnect (in `screen`, use `ctrl + A` then press `K`, or `Ctrl-Shift-A/X` in picocom) and you can push your firmware:
+
+
+```
+# push file & test
+ampy --port ${PORT} run keeb.py
+```
+
+if it seems to work right (press keys on your keyboard and see codes) then you can make a boot.py that does this:
+
+```
+import keeb
+keeb.start(5, 6)
+```
+
+and push them both:
+
+```
+ampy --port ${PORT} put keeb.py
+ampy --port ${PORT} put boot.py
+```
