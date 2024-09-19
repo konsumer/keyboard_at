@@ -49,3 +49,39 @@ and push them both:
 ampy --port ${PORT} put keeb.py
 ampy --port ${PORT} put boot.py
 ```
+
+### WebREPL
+
+This is optional, but makes it easier to mess with the adapter (change firmware and inspect code and stuff.)
+
+
+Login over serial and run `import webrepl_setup`. Go through wizard, then make a boot.py file that looks like this: 
+```py
+# This file is executed on every boot (including wake-boot from deepsleep)
+
+ssid='<YOURS>'
+key='<YOURS>'
+
+#import esp
+#esp.osdebug(None)
+
+import webrepl
+import network
+
+import keeb
+keeb.start(5, 6)
+
+def do_connect():
+    wlan = network.WLAN(network.STA_IF)
+    wlan.active(True)
+    if not wlan.isconnected():
+        print('connecting to network...')
+        wlan.connect(ssid, key)
+        while not wlan.isconnected():
+            pass
+
+do_connect()
+webrepl.start()
+```
+
+Now, upload with `ampy --port ${PORT} put boot.py`
