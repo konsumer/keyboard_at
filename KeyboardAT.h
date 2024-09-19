@@ -101,7 +101,9 @@ unsigned char translationTable[128] = {
 class KeyboardAT {
 public:
   ~KeyboardAT() {}
-  KeyboardAT(int clock, int data) {
+  KeyboardAT(){}
+  
+  void begin(int clock, int data) {
     this->clock = clock;
     this->data = data;
 

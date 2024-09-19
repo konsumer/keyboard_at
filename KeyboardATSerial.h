@@ -4,9 +4,8 @@
 
 class KeyboardATSerial : public KeyboardAT {
 public:
-  KeyboardATSerial(int clock, int data)
-    : KeyboardAT(clock, data) {
-    Serial.begin(9600);
+  KeyboardATSerial()
+    : KeyboardAT() {
   }
 
   virtual void _update() {}

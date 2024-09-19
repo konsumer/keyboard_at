@@ -12,7 +12,11 @@ void IRAM_ATTR clk_down() {
 }
 
 void setup() {
-  keeb = new KeyboardATSerial(PIN_CLOCK, PIN_DATA);
+  Serial.begin(9600);
+  Serial.println("Starting logger for IBM XT Keyboard");
+
+  keeb = new KeyboardATSerial();
+  keeb->begin(PIN_CLOCK, PIN_DATA);
   attachInterrupt(digitalPinToInterrupt(PIN_CLOCK), clk_down, FALLING);
 }
 
