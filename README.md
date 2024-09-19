@@ -1,4 +1,4 @@
-This is a USB HID keyboard-adapter for ESP32 running micropython.
+This is a USB HID keyboard-adapter for IBM AT that runs on ESP32 with micropython.
 
 # micropython setup
 
