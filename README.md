@@ -84,4 +84,4 @@ do_connect()
 webrepl.start()
 ```
 
-Now, upload with `ampy --port ${PORT} put boot.py`
+Now, upload with `ampy --port ${PORT} put boot.py` and you can access it at port 8266 on the device (example `http://192.168.86.55:8266/`.)
