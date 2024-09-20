@@ -12,7 +12,7 @@ sudo pip3 install --break-system-packages esptool adafruit-ampy
 PORT=/dev/cu.usbserial-0001
 
 # linux is more like this
-PORT=dev/ttyUSB0
+PORT=/dev/ttyUSB0
 
 wget https://micropython.org/resources/firmware/ESP32_GENERIC-20240602-v1.23.0.bin
 
