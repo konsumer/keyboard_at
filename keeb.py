@@ -1,97 +1,14 @@
 from machine import Pin
 
-# TODO: translate these all into char-codes (not strings)
+# scan-code keymap
 translationTable = [
-  0,     # Not Used
-  0xB1,  # esc
-  '1',
-  '2',
-  '3',
-  '4',
-  '5',
-  '6',
-  '7',
-  '8',
-  '9',
-  '0',
-  '-',  # ' and ?
-  0xb6,
-  0xB2,  # backspace
-
-  0xB3,  # tab
-  'q',
-  'w',
-  'e',
-  'r',
-  't',
-  'y',
-  'u',
-  'i',
-  'o',
-  'p',
-  0xb7,
-  0xb8,
-  0xB0,  # return
-
-  0x80,  # left ctrl
-  'a',
-  's',
-  'd',
-  'f',
-  'g',
-  'h',
-  'j',
-  'k',
-  'l',
-  0xbb,
-  0xbc,
-  'ù',
-
-  0x81,  # left shift
-  0x60,
-  'z',
-  'x',
-  'c',
-  'v',
-  'b',
-  'n',
-  'm',
-  ',',
-  '.',
-  0xc0,
-  0x85,  # right shift
-  0x87,  # right GUI
-
-  0x82,  # left alt
-  ' ',
-  0xC1,  # caps lock
-
-  0xC2,  # f1
-  0xC3,  # f2
-  0xC4,  # f3
-  0xC5,  # f4
-  0xC6,  # f5
-  0xC7,  # f6
-  0xC8,  # f7
-  0xC9,  # f8
-  0xCA,  # f9
-  0xCB,  # f10
-
-  0xdb,  # Num Lock
-  0x84,  # right ctrl
-  0xe7,
-  0xe8,
-  0xe9,
-  0xde,
-  0xe4,
-  0xe5,
-  0xe6,
-  0xdf,
-  0xe1,
-  0xe2,
-  0xe3,
-  0xea,
-  0xeb
+    0, 177,  49,  50,  51,  52,  53,  54,  55,  56,  57,  48,
+   45, 182, 178, 179, 113, 119, 101, 114, 116, 121, 117, 105,
+  111, 112, 183, 184, 176, 128,  97, 115, 100, 102, 103, 104,
+  106, 107, 108, 187, 188, 249, 129,  96, 122, 120,  99, 118,
+   98, 110, 109,  44,  46, 192, 133, 135, 130,  32, 193, 194,
+  195, 196, 197, 198, 199, 200, 201, 202, 203, 219, 132, 231,
+  232, 233, 222, 228, 229, 230, 223, 225, 226, 227, 234, 235
 ]
 
 START_BITS_START=0x00
