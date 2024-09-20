@@ -31,16 +31,11 @@ now disconnect (in `screen`, use `ctrl + A` then press `K`, or `Ctrl-Shift-A/X` 
 ### upload firmware
 
 
-```sh
-# push file & test
-ampy --port ${PORT} run keeb.py
-```
-
-if it seems to work right (press keys on your keyboard and see codes) then you can make a boot.py that does this:
+Now, you can make a boot.py that does this at end:
 
 ```py
 import keeb
-keeb.start(5, 6)
+keeb.start(4, 5)
 ```
 
 and push them both:
@@ -61,15 +56,11 @@ Login over serial and run `import webrepl_setup`. Go through wizard, then make a
 
 ssid='<YOURS>'
 key='<YOURS>'
-
-#import esp
-#esp.osdebug(None)
+network.hostname("espkeeb")
 
 import webrepl
 import network
-
 import keeb
-keeb.start(5, 6)
 
 def do_connect():
     wlan = network.WLAN(network.STA_IF)
@@ -82,6 +73,7 @@ def do_connect():
 
 do_connect()
 webrepl.start()
+keeb.start(4, 5)
 ```
 
-Now, upload with `ampy --port ${PORT} put boot.py` and you can access it at port 8266 on the device (example `http://192.168.86.55:8266/`.)
+Now, upload with `ampy --port ${PORT} put boot.py` and you can access it at port 8266 on the device (example `http://espkeeb:8266/`.)
