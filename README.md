@@ -54,13 +54,13 @@ Login over serial and run `import webrepl_setup`. Go through wizard, then make a
 ```py
 # This file is executed on every boot (including wake-boot from deepsleep)
 
-ssid='<YOURS>'
-key='<YOURS>'
-network.hostname("espkeeb")
-
 import webrepl
 import network
 import keeb
+
+ssid='<YOURS>'
+key='<YOURS>'
+network.hostname("espkeeb")
 
 def do_connect():
     wlan = network.WLAN(network.STA_IF)
