@@ -47,7 +47,7 @@ ampy --port ${PORT} put boot.py
 
 ### customization
 
-I use a [standard keymap](https://github.com/konsumer/keyboard_at/blob/main/keeb.py#L4-L12), which you can modify, but you can also just modify `onKeyUp`/`onKeyDown` to do whatever you want. Currently, it only prints code to serial, but you could make it send bluetooth or USB HID keyboard messages (these 2 modes are in the works.)
+I use a [standard keymap](https://github.com/konsumer/keyboard_at/blob/main/keeb.py#L4-L12), which you can modify, but you can also just modify `onKeyUp`/`onKeyDown` to do whatever you want. Currently, it only prints code to serial, but you could make it send bluetooth or USB HID keyboard messages (these 2 modes are in the works.) The idea is that "the firmware is the configuration", so really, go wild, and make it do whatever you want.
 
 ### WebREPL
 
