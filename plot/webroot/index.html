@@ -11,6 +11,11 @@
 <script type="module">
   const buttonConnect = document.getElementById("connect");
 
+  const testing = false;
+
+  const sleep = (time) =>
+    new Promise((resolve, reject) => setTimeout(resolve, time));
+
   navigator.serial.addEventListener("connect", (e) => {
     console.log("connect");
   });
@@ -54,20 +59,16 @@
     const dpsD = [];
     let x = 0;
     const chart = new CanvasJS.Chart("chartContainer", {
-      zoomEnabled: true,
+      zoomEnabled: false,
       title: {
         text: "DATA",
       },
       data: [
         {
           pointStyle: "rect",
-          dataPoints: dpsC,
-          title: "clock",
-        },
-        {
-          pointStyle: "rect",
           dataPoints: dpsD,
           title: "data",
+          color: "green",
         },
       ],
 
@@ -77,12 +78,12 @@
         lineThickness: 0,
         labelFormatter: () => "",
       },
-      // axisY: {
-      //   gridThickness: 0,
-      //   tickLength: 0,
-      //   lineThickness: 0,
-      //   labelFormatter: () => "|",
-      // },
+      axisY: {
+        gridThickness: 0,
+        tickLength: 0,
+        lineThickness: 0,
+        labelFormatter: () => "",
+      },
     });
 
     setTimeout(async () => {
@@ -97,33 +98,31 @@
     requestAnimationFrame(draw);
 
     try {
-      let oldValue = [0, 0];
       while (true) {
-        const { value, done } = await reader.read();
+        const { value, done } = testing
+          ? {
+              value: [Math.random() > 0.5 ? 0 : 1, Math.random() > 0.5 ? 1 : 2],
+              done: false,
+            }
+          : await reader.read();
+
+        if (testing) {
+          await sleep(10);
+        }
+
         if (done) {
-          // |reader| has been canceled.
           break;
         }
 
-        // await reader.read();
-        // const value = [
-        //   Math.random() > 0.5 ? 0 : 1,
-        //   Math.random() > 0.5 ? 0 : 1,
-        // ];
-
-        if (value && value.length === 2) {
-          if (oldValue[0] !== value[0] || oldValue[1] !== value[1]) {
-            while (dpsC.length > 500) {
-              dpsC.shift();
-            }
-            while (dpsD.length > 500) {
-              dpsD.shift();
-            }
-            x++;
-            dpsC.push({ x, y: value[0] });
-            dpsD.push({ x, y: value[1] });
-            oldValue = value;
+        // only record data on clock=1
+        if (value && value.length === 2 && value[0] === 1) {
+          while (dpsD.length > 100) {
+            dpsD.shift();
           }
+          x++;
+          // add 1 so it shows 0/1 both in chart
+          dpsD.push({ x, y: value[1] + 1 });
+          console.log(value[1]);
         }
       }
     } catch (error) {
