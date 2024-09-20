@@ -3,10 +3,10 @@
 """Simple https server for development."""
 
 import ssl
+import os
 from http.server import HTTPServer, SimpleHTTPRequestHandler
 
-CERTFILE = './localhost.pem'
-
+CERTFILE = os.path.join(os.path.dirname(__file__), 'localhost.pem')
 
 def main():
     https_server(certfile=CERTFILE)
@@ -33,4 +33,6 @@ def print_server_info(server):
 
 
 if __name__ == "__main__":
+    web_dir = os.path.join(os.path.dirname(__file__), 'webroot')
+    os.chdir(web_dir)
     main()

@@ -1,0 +1,128 @@
+<button id="connect">connect</button>
+
+<style>
+  .canvasjs-chart-credit {
+    display: none !important;
+  }
+</style>
+
+<div id="chartContainer" style="height: 360px; width: 100%" />
+<script src="https://cdn.canvasjs.com/ga/canvasjs.min.js"></script>
+<script type="module">
+  const buttonConnect = document.getElementById("connect");
+
+  navigator.serial.addEventListener("connect", (e) => {
+    console.log("connect");
+  });
+
+  navigator.serial.addEventListener("disconnect", (e) => {
+    console.log("disconnect");
+  });
+
+  const d = new TextDecoder();
+  const e = new TextEncoder();
+
+  class LineBreakTransformer {
+    constructor() {
+      this.container = "";
+    }
+
+    transform(chunk, controller) {
+      this.container += chunk;
+      const lines = this.container.split("\r\n");
+      this.container = lines.pop();
+      lines.forEach((line) => controller.enqueue(line));
+    }
+
+    flush(controller) {
+      controller.enqueue(this.container);
+    }
+  }
+
+  buttonConnect.addEventListener("click", async () => {
+    // const port = await  navigator.serial.requestPort({ filters: [{ usbVendorId: 0x10c4, usbProductId:0xea60 }] })
+    const port = await navigator.serial.requestPort();
+    await port.open({ baudRate: 115200 });
+    const writer = port.writable.getWriter();
+
+    const reader = port.readable
+      .pipeThrough(new TextDecoderStream())
+      .pipeThrough(new TransformStream(new LineBreakTransformer()))
+      .getReader();
+
+    const dpsC = [];
+    const dpsD = [];
+    let x = 0;
+    const chart = new CanvasJS.Chart("chartContainer", {
+      zoomEnabled: true,
+      title: {
+        text: "DATA",
+      },
+      data: [
+        {
+          type: "line",
+          dataPoints: dpsC,
+          title: "clock",
+        },
+        {
+          type: "line",
+          dataPoints: dpsD,
+          title: "data",
+        },
+      ],
+
+      axisX: {
+        gridThickness: 0,
+        tickLength: 0,
+        lineThickness: 0,
+        labelFormatter: () => "|",
+      },
+      // axisY: {
+      //   gridThickness: 0,
+      //   tickLength: 0,
+      //   lineThickness: 0,
+      //   labelFormatter: () => "|",
+      // },
+    });
+
+    setTimeout(async () => {
+      await writer.write(e.encode("import plot\n\r"));
+      writer.releaseLock();
+    }, 1000);
+
+    setInterval(() => {
+      chart.render();
+    }, 500);
+
+    try {
+      while (true) {
+        const { value, done } = await reader.read();
+        if (done) {
+          // |reader| has been canceled.
+          break;
+        }
+        if (value && value.length === 2) {
+          while (dpsC.length > 100) {
+            dpsC.shift();
+          }
+          while (dpsD.length > 100) {
+            dpsD.shift();
+          }
+          x++;
+          dpsC.push({
+            x,
+            y: value[0],
+          });
+          dpsD.push({
+            x,
+            y: value[1],
+          });
+        }
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      reader.releaseLock();
+    }
+  });
+</script>

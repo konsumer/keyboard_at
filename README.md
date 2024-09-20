@@ -6,7 +6,7 @@ This is a USB HID keyboard-adapter for IBM AT that runs on ESP32 with micropytho
 
 ```sh
 # get the tools
-sudo pip install esptool adafruit-ampy
+sudo pip3 install --break-system-packages esptool adafruit-ampy
 
 # mac is like this
 PORT=/dev/cu.usbserial-0001
